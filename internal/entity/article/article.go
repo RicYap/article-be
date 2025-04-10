@@ -1,12 +1,13 @@
 package article
 
-// Skeleton model
-type User struct {
-	UserID      int    `db:"UserID" json:"user_id"`
-	Name        string `db:"Name" json:"name"`
-	UserName    string `db:"UserName" json:"username"`
-	RoleID      int    `db:"RoleID" json:"role_id"`
-	RoleName    string `db:"RoleName" json:"role_name"`
-	Password    string `db:"Name" json:"password"`
-	PhoneNumber string `db:"PhoneNumber" json:"phone_number"`
+import "time"
+
+type Post struct {
+	ID          uint      `gorm:"column:Id;primaryKey;autoIncrement"`
+	Title       string    `gorm:"column:Title;type:varchar(200);not null"`
+	Content     string    `gorm:"column:Content;type:text;not null"`
+	Category    string    `gorm:"column:Category;type:varchar(100);not null"`
+	CreatedDate time.Time `gorm:"column:Created_date;type:timestamp;default:CURRENT_TIMESTAMP"`
+	UpdatedDate time.Time `gorm:"column:Updated_date;type:timestamp;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+	Status      string    `gorm:"column:Status;type:varchar(100);not null;check:status IN ('Publish', 'Draft', 'Trash')"`
 }

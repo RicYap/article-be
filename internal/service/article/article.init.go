@@ -6,7 +6,7 @@ import (
 )
 
 type Data interface {
-	GetAllUser(ctx context.Context) ([]article.User, error)
+	CreateArticle(ctx context.Context, article article.Post) error
 }
 
 type Service struct {

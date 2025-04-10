@@ -25,8 +25,8 @@ func (s *Server) Handler() *mux.Router {
 
 	// Routes
 	article := r.PathPrefix("/article").Subrouter()
-	article.HandleFunc("", s.Article.GetAllUser).Methods("GET")
-	article.HandleFunc("/pdf", s.Article.GeneratePDF).Methods("GET")
+	article.HandleFunc("", s.Article.CreateArticle).Methods("POST")
+	
 
 	r.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	return r

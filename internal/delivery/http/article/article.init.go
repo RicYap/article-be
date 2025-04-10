@@ -6,8 +6,7 @@ import (
 )
 
 type ArticleSvc interface {
-	GetAllUser(ctx context.Context) ([]article.User, error)
-	GeneratePDF(ctx context.Context) ([]byte, error)
+	CreateArticle(ctx context.Context, article article.Post) error
 }
 
 type (

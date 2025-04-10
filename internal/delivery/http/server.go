@@ -10,8 +10,7 @@ import (
 
 // ArticleHandler ...
 type ArticleHandler interface {
-	GetAllUser(w http.ResponseWriter, r *http.Request)
-	GeneratePDF(w http.ResponseWriter, r *http.Request)
+	CreateArticle(w http.ResponseWriter, r *http.Request)
 }
 
 // Server ...

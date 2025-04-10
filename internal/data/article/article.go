@@ -6,26 +6,15 @@ import (
 	"context"
 )
 
-func (d Data) GetAllUser(ctx context.Context) ([]article.User, error) {
+func (d Data) CreateArticle(ctx context.Context, article article.Post) error {
 
-	var (
-		user  article.User
-		users []article.User
-	)
-
-	rows, err := (*d.stmt)[getAllUser].QueryxContext(ctx)
+	err := d.db.
+		WithContext(ctx).
+		Create(&article)
 	if err != nil {
-		return users, err
+		return errors.Wrap(err.Error, "[DATA][CreateArticle]")
 	}
 
-	for rows.Next() {
-		err = rows.StructScan(&user)
-		if err != nil {
-			return users, errors.Wrap(err, "[DATA][GetAllUser]")
-		}
-
-		users = append(users, user)
-	}
-
-	return users, err
+	return nil
 }
+

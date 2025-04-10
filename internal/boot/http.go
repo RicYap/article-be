@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"article/internal/config"
+	"article/internal/entity/article"
 
-	"github.com/fsnotify/fsnotify"
-	"github.com/jmoiron/sqlx"
-	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 
 	articleData "article/internal/data/article"
 	articleServer "article/internal/delivery/http"
@@ -27,9 +27,14 @@ func HTTP() error {
 
 	// Open Databases
 	// db, db2, err := openDatabases(cfg)
-	db, err := openDatabases(cfg)
+	db, err := gorm.Open(mysql.Open(cfg.Database.Master), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("[DB] Failed to initialize database connection: %v", err)
+		log.Fatal("Failed to connect database:", err)
+	}
+
+	err = db.AutoMigrate(&article.Post{})
+	if err != nil {
+		log.Fatal("Migration failed:", err)
 	}
 
 	docs.SwaggerInfo.Host = cfg.Swagger.Host
@@ -40,31 +45,6 @@ func HTTP() error {
 	as := articleService.New(ad)
 	ah := articleHandler.New(as)
 
-	//watch config changes
-	config.PrepareWatchPath()
-	viper.OnConfigChange(func(e fsnotify.Event) {
-		err := config.Init()
-		if err != nil {
-			log.Printf("[VIPER] Error get config file, %v", err)
-		}
-		cfg = config.Get()
-
-		//open new db connection pool
-		//dbNew, db2New, err := openDatabases(cfg)
-		dbNew, err := openDatabases(cfg)
-		if err != nil {
-			log.Printf("[VIPER] Error open db connection, %v", err)
-		} else {
-			//replace all previous db connection pool
-			//*db2 = *db2New
-			*db = *dbNew
-
-			//re-init all Data Layer
-			//sd2.InitStmt()
-			ad.InitStmt()
-		}
-	})
-
 	s := articleServer.Server{
 		Article: ah,
 	}
@@ -74,36 +54,4 @@ func HTTP() error {
 	}
 
 	return nil
-}
-
-// open all databases here
-func openDatabases(cfg *config.Config) (db *sqlx.DB /*db2 *sqlx.DB,*/, err error) {
-	db, err = openConnectionPool("mysql", cfg.Database.Master)
-	if err != nil {
-		return db, err
-	}
-
-	// db2, err = openConnectionPool("mysql", cfg.Database.DB2)
-	// if err != nil {
-	// 	return db, db2, err
-	// }
-
-	return db, err
-
-	//return db, db2, err
-}
-
-// create new connection pool and test the connection
-func openConnectionPool(driver string, connString string) (db *sqlx.DB, err error) {
-	db, err = sqlx.Open(driver, connString)
-	if err != nil {
-		return db, err
-	}
-
-	err = db.Ping()
-	if err != nil {
-		return db, err
-	}
-
-	return db, err
 }
