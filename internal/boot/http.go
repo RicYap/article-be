@@ -1,20 +1,20 @@
 package boot
 
 import (
+	"article/docs"
 	"log"
 	"net/http"
-	"skeleton/docs"
 
-	"skeleton/internal/config"
+	"article/internal/config"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
 
-	skeletonData "skeleton/internal/data/skeleton"
-	skeletonServer "skeleton/internal/delivery/http"
-	skeletonHandler "skeleton/internal/delivery/http/skeleton"
-	skeletonService "skeleton/internal/service/skeleton"
+	articleData "article/internal/data/article"
+	articleServer "article/internal/delivery/http"
+	articleHandler "article/internal/delivery/http/article"
+	articleService "article/internal/service/article"
 )
 
 // HTTP will load configuration, do dependency injection and then start the HTTP server
@@ -36,9 +36,9 @@ func HTTP() error {
 	docs.SwaggerInfo.Schemes = cfg.Swagger.Schemes
 
 	// Diganti dengan domain yang anda buat
-	sd := skeletonData.New(db)
-	ss := skeletonService.New(sd)
-	sh := skeletonHandler.New(ss)
+	ad := articleData.New(db)
+	as := articleService.New(ad)
+	ah := articleHandler.New(as)
 
 	//watch config changes
 	config.PrepareWatchPath()
@@ -61,12 +61,12 @@ func HTTP() error {
 
 			//re-init all Data Layer
 			//sd2.InitStmt()
-			sd.InitStmt()
+			ad.InitStmt()
 		}
 	})
 
-	s := skeletonServer.Server{
-		Skeleton: sh,
+	s := articleServer.Server{
+		Article: ah,
 	}
 
 	if err := s.Serve(cfg.Server.Port); err != http.ErrServerClosed {
@@ -76,7 +76,7 @@ func HTTP() error {
 	return nil
 }
 
-//open all databases here
+// open all databases here
 func openDatabases(cfg *config.Config) (db *sqlx.DB /*db2 *sqlx.DB,*/, err error) {
 	db, err = openConnectionPool("mysql", cfg.Database.Master)
 	if err != nil {
@@ -93,7 +93,7 @@ func openDatabases(cfg *config.Config) (db *sqlx.DB /*db2 *sqlx.DB,*/, err error
 	//return db, db2, err
 }
 
-//create new connection pool and test the connection
+// create new connection pool and test the connection
 func openConnectionPool(driver string, connString string) (db *sqlx.DB, err error) {
 	db, err = sqlx.Open(driver, connString)
 	if err != nil {

@@ -1,16 +1,16 @@
-package skeleton
+package article
 
 import (
+	"article/pkg/errors"
 	"bytes"
 	"context"
 	"log"
-	"skeleton/internal/entity/skeleton"
-	"skeleton/pkg/errors"
 
 	"github.com/jung-kurt/gofpdf"
+	"article/internal/entity/article"
 )
 
-func (s Service) GetAllUser(ctx context.Context) ([]skeleton.User, error) {
+func (s Service) GetAllUser(ctx context.Context) ([]article.User, error) {
 
 	users, err := s.data.GetAllUser(ctx)
 	if err != nil {
@@ -41,7 +41,7 @@ func (s Service) GeneratePDF(ctx context.Context) ([]byte, error) {
 	pdf.Ln(30)
 
 	pdf.SetFont("Arial", "", 12)
-	
+
 	pdf.CellFormat(cellWidth, 15, "Name", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(cellWidth, 15, "Username", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(cellWidth, 15, "Role", "1", 0, "C", false, 0, "")
@@ -55,9 +55,9 @@ func (s Service) GeneratePDF(ctx context.Context) ([]byte, error) {
 	}
 
 	err = pdf.Output(&docPdf)
-    if err != nil {
-        log.Fatalf("Error creating PDF: %s", err)
-    }
+	if err != nil {
+		log.Fatalf("Error creating PDF: %s", err)
+	}
 
 	return docPdf.Bytes(), err
 }

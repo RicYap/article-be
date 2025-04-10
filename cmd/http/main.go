@@ -8,8 +8,8 @@
 package main
 
 import (
+	"article/internal/boot"
 	"log"
-	"skeleton/internal/boot"
 
 	_ "github.com/go-sql-driver/mysql"
 )

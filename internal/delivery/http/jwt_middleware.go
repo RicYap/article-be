@@ -1,12 +1,12 @@
 package http
 
 import (
+	"article/internal/entity"
+	"article/pkg/response"
 	"context"
 	"fmt"
 	"net/http"
 	"os"
-	"skeleton/internal/entity"
-	"skeleton/pkg/response"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"

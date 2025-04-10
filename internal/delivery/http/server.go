@@ -3,20 +3,20 @@ package http
 import (
 	"net/http"
 
-	"skeleton/pkg/grace"
+	"article/pkg/grace"
 
 	"github.com/rs/cors"
 )
 
-// SkeletonHandler ...
-type SkeletonHandler interface {
+// ArticleHandler ...
+type ArticleHandler interface {
 	GetAllUser(w http.ResponseWriter, r *http.Request)
 	GeneratePDF(w http.ResponseWriter, r *http.Request)
 }
 
 // Server ...
 type Server struct {
-	Skeleton SkeletonHandler
+	Article ArticleHandler
 }
 
 // Serve is serving HTTP gracefully on port x ...

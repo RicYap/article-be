@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"skeleton/pkg/response"
+	"article/pkg/response"
 
 	httpSwagger "github.com/swaggo/http-swagger"
 
@@ -24,9 +24,9 @@ func (s *Server) Handler() *mux.Router {
 	// Tambahan Prefix di depan API endpoint
 
 	// Routes
-	skeleton := r.PathPrefix("/skeleton").Subrouter()
-	skeleton.HandleFunc("", s.Skeleton.GetAllUser).Methods("GET")
-	skeleton.HandleFunc("/pdf", s.Skeleton.GeneratePDF).Methods("GET")
+	article := r.PathPrefix("/article").Subrouter()
+	article.HandleFunc("", s.Article.GetAllUser).Methods("GET")
+	article.HandleFunc("/pdf", s.Article.GeneratePDF).Methods("GET")
 
 	r.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	return r

@@ -1,10 +1,10 @@
-package skeleton
+package article
 
 import (
+	httpHelper "article/internal/delivery/http"
+	"article/pkg/response"
 	"log"
 	"net/http"
-	httpHelper "skeleton/internal/delivery/http"
-	"skeleton/pkg/response"
 )
 
 // GetSkeleton godoc
@@ -22,7 +22,7 @@ func (h *Handler) GetAllUser(w http.ResponseWriter, r *http.Request) {
 
 	ctx := r.Context()
 
-	result, err := h.skeletonSvc.GetAllUser(ctx)
+	result, err := h.articleSvc.GetAllUser(ctx)
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
@@ -37,10 +37,10 @@ func (h *Handler) GeneratePDF(w http.ResponseWriter, r *http.Request) {
 	resp := response.Response{}
 	ctx := r.Context()
 
-	result, err := h.skeletonSvc.GeneratePDF(ctx)
+	result, err := h.articleSvc.GeneratePDF(ctx)
 	if err != nil {
 		defer resp.RenderJSON(w, r)
-		
+
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
 		return

@@ -1,4 +1,4 @@
-package skeleton
+package article
 
 // Skeleton model
 type User struct {

@@ -1,16 +1,16 @@
-package skeleton
+package article
 
 import (
+	"article/internal/entity/article"
+	"article/pkg/errors"
 	"context"
-	"skeleton/internal/entity/skeleton"
-	"skeleton/pkg/errors"
 )
 
-func (d Data) GetAllUser(ctx context.Context) ([]skeleton.User, error) {
+func (d Data) GetAllUser(ctx context.Context) ([]article.User, error) {
 
 	var (
-		user  skeleton.User
-		users []skeleton.User
+		user  article.User
+		users []article.User
 	)
 
 	rows, err := (*d.stmt)[getAllUser].QueryxContext(ctx)

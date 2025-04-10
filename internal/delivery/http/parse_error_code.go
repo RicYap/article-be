@@ -1,7 +1,7 @@
 package http
 
 import (
-	"skeleton/pkg/response"
+	"article/pkg/response"
 	"strings"
 )
 

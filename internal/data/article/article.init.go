@@ -1,4 +1,4 @@
-package skeleton
+package article
 
 import (
 	"context"
@@ -25,7 +25,6 @@ const (
 	qGetAllUser = `SELECT UserID, u.Name, UserName, u.RoleID, r.Name AS RoleName, PhoneNumber 
 					FROM user u
 						JOIN role r ON u.RoleID = r.RoleID`
-
 )
 
 var (
