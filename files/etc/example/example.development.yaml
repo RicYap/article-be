@@ -1,0 +1,10 @@
+server:
+    port: ":8080"
+database:
+    master: "root:@tcp(127.0.0.1:3306)/cetiya"
+api:
+    auth: "https://staging-api.cfu.pharmalink.id/auth"
+swagger:
+    host: "localhost:8080"
+    schemes:
+        - http
