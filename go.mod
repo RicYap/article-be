@@ -9,11 +9,10 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/go-querystring v1.1.0
 	github.com/gorilla/mux v1.8.0
-	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.7.0
 	github.com/rs/xid v1.3.0
 	github.com/spf13/viper v1.13.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/swaggo/http-swagger v1.3.3
 	github.com/swaggo/swag v1.8.1
 	golang.org/x/text v0.22.0 // indirect
