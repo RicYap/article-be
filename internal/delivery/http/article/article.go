@@ -194,3 +194,33 @@ func (h *Handler) UpdateArticle(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("[INFO] %s %s\n", r.Method, r.URL)
 }
+
+func (h *Handler) DeleteArticle(w http.ResponseWriter, r *http.Request) {
+
+	var (
+		err error
+	)
+
+	resp := response.Response{}
+	defer resp.RenderJSON(w, r)
+
+	ctx := r.Context()
+
+	vars := mux.Vars(r)
+
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
+		return
+	}
+
+	err = h.articleSvc.DeleteArticle(ctx, id)
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
+		return
+	}
+
+	log.Printf("[INFO] %s %s\n", r.Method, r.URL)
+}

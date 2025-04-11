@@ -48,3 +48,14 @@ func (s Service) UpdateArticle(ctx context.Context, articleBody article.PostsSli
 
 	return nil
 }
+
+func (s Service) DeleteArticle(ctx context.Context, id int) error {
+
+	err := s.data.DeleteArticle(ctx, id)
+	if err != nil {
+		return errors.Wrap(err, "[SERVICE][DeleteArticle]")
+	}
+
+	return nil
+}
+

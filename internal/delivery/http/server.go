@@ -14,6 +14,7 @@ type ArticleHandler interface {
 	GetArticleById(w http.ResponseWriter, r *http.Request)
 	GetArticlePagination(w http.ResponseWriter, r *http.Request)
 	UpdateArticle(w http.ResponseWriter, r *http.Request)
+	DeleteArticle(w http.ResponseWriter, r *http.Request)
 }
 
 // Server ...

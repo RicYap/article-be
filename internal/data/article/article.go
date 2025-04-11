@@ -75,3 +75,16 @@ func (d Data) UpdateArticle(ctx context.Context, articleBody article.PostsSlim) 
 
 	return nil
 }
+
+func (d Data) DeleteArticle(ctx context.Context, id int) error {
+
+	err := d.db.
+		WithContext(ctx).
+		Delete(&article.Posts{}, id).
+		Error
+	if err != nil {
+		return errors.Wrap(err, "[DATA][DeleteArticle]")
+	}
+
+	return nil
+}

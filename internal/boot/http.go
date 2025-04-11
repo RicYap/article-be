@@ -17,7 +17,6 @@ import (
 	articleService "article/internal/service/article"
 )
 
-// HTTP will load configuration, do dependency injection and then start the HTTP server
 func HTTP() error {
 	err := config.Init()
 	if err != nil {
@@ -25,8 +24,6 @@ func HTTP() error {
 	}
 	cfg := config.Get()
 
-	// Open Databases
-	// db, db2, err := openDatabases(cfg)
 	db, err := gorm.Open(mysql.Open(cfg.Database.Master), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect database:", err)
@@ -40,7 +37,6 @@ func HTTP() error {
 	docs.SwaggerInfo.Host = cfg.Swagger.Host
 	docs.SwaggerInfo.Schemes = cfg.Swagger.Schemes
 
-	// Diganti dengan domain yang anda buat
 	ad := articleData.New(db)
 	as := articleService.New(ad)
 	ah := articleHandler.New(as)
