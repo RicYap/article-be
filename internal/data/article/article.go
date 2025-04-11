@@ -19,29 +19,31 @@ func (d Data) CreateArticle(ctx context.Context, article article.Posts) error {
 	return nil
 }
 
-func (d Data) GetArticleById(ctx context.Context, id int) (article.Posts, error) {
+func (d Data) GetArticleById(ctx context.Context, id int) (article.PostsResponse, error) {
 
-	var article article.Posts
+	var articleResult article.PostsResponse
 
 	err := d.db.
 		WithContext(ctx).
+		Model(&article.Posts{}).
 		Select("Title, Content, Category, Status").
 		Where("Id = ?", id).
-		First(&article).
+		First(&articleResult).
 		Error
 	if err != nil {
-		return article, errors.Wrap(err, "[DATA][GetArticleById]")
+		return articleResult, errors.Wrap(err, "[DATA][GetArticleById]")
 	}
 
-	return article, nil
+	return articleResult, nil
 }
 
-func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.Posts, error) {
+func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsResponse, error) {
 
-	var articles []article.Posts
+	var articles []article.PostsResponse
 
 	err := d.db.
 		WithContext(ctx).
+		Model(&article.Posts{}).
 		Select("Title, Content, Category, Status").
 		Limit(limit).
 		Offset(offset).

@@ -17,7 +17,7 @@ func (s Service) CreateArticle(ctx context.Context, article article.Posts) error
 	return err
 }
 
-func (s Service) GetArticleById(ctx context.Context, id int) (article.Posts, error) {
+func (s Service) GetArticleById(ctx context.Context, id int) (article.PostsResponse, error) {
 
 	article, err := s.data.GetArticleById(ctx, id)
 	if err != nil {
@@ -27,7 +27,7 @@ func (s Service) GetArticleById(ctx context.Context, id int) (article.Posts, err
 	return article, nil
 }
 
-func (s Service) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.Posts, error) {
+func (s Service) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsResponse, error) {
 
 	offset = (offset - 1) * limit
 

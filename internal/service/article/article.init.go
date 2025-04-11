@@ -7,8 +7,8 @@ import (
 
 type Data interface {
 	CreateArticle(ctx context.Context, article article.Posts) error
-	GetArticleById(ctx context.Context, id int) (article.Posts, error)
-	GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.Posts, error)
+	GetArticleById(ctx context.Context, id int) (article.PostsResponse, error)
+	GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsResponse, error)
 }
 
 type Service struct {
