@@ -32,7 +32,7 @@ func HTTP() error {
 		log.Fatal("Failed to connect database:", err)
 	}
 
-	err = db.AutoMigrate(&article.Post{})
+	err = db.AutoMigrate(&article.Posts{})
 	if err != nil {
 		log.Fatal("Migration failed:", err)
 	}

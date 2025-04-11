@@ -12,21 +12,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Handler will initialize mux router and register handler
 func (s *Server) Handler() *mux.Router {
 	r := mux.NewRouter()
-	// Jika tidak ditemukan, jangan diubah.
+	
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
-	// Health Check
 	r.HandleFunc("", defaultHandler).Methods("GET")
 	r.HandleFunc("/", defaultHandler).Methods("GET")
-
-	// Tambahan Prefix di depan API endpoint
 
 	// Routes
 	article := r.PathPrefix("/article").Subrouter()
 	article.HandleFunc("", s.Article.CreateArticle).Methods("POST")
-	
+	article.HandleFunc("/{id:[0-9]+}", s.Article.GetArticleById).Methods("GET")
+	article.HandleFunc("/{limit:[0-9]+}/{offset:[0-9]+}", s.Article.GetArticlePagination).Methods("GET")
 
 	r.PathPrefix("/swagger").Handler(httpSwagger.WrapHandler)
 	return r
