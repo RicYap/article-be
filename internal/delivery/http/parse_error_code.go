@@ -10,12 +10,6 @@ func ParseErrorCode(err string) response.Response {
 	errResp := response.Error{}
 
 	switch {
-	case strings.Contains(err, "401"):
-		errResp = response.Error{
-			Status: false,
-			Msg:    "Unauthorized",
-			Code:   401,
-		}
 	case strings.Contains(err, "10001"):
 		errResp = response.Error{
 			Status: false,

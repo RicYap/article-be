@@ -7,8 +7,9 @@ import (
 
 type ArticleSvc interface {
 	CreateArticle(ctx context.Context, article article.Posts) error
-	GetArticleById(ctx context.Context, id int) (article.PostsResponse, error)
-	GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsResponse, error)
+	GetArticleById(ctx context.Context, id int) (article.PostsSlim, error)
+	GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsSlim, error)
+	UpdateArticle(ctx context.Context, articleBody article.PostsSlim) error
 }
 
 type (

@@ -19,9 +19,9 @@ func (d Data) CreateArticle(ctx context.Context, article article.Posts) error {
 	return nil
 }
 
-func (d Data) GetArticleById(ctx context.Context, id int) (article.PostsResponse, error) {
+func (d Data) GetArticleById(ctx context.Context, id int) (article.PostsSlim, error) {
 
-	var articleResult article.PostsResponse
+	var articleResult article.PostsSlim
 
 	err := d.db.
 		WithContext(ctx).
@@ -37,9 +37,9 @@ func (d Data) GetArticleById(ctx context.Context, id int) (article.PostsResponse
 	return articleResult, nil
 }
 
-func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsResponse, error) {
+func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) ([]article.PostsSlim, error) {
 
-	var articles []article.PostsResponse
+	var articles []article.PostsSlim
 
 	err := d.db.
 		WithContext(ctx).
@@ -56,4 +56,22 @@ func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) (
 	return articles, nil
 }
 
+func (d Data) UpdateArticle(ctx context.Context, articleBody article.PostsSlim) error {
 
+	err := d.db.
+		WithContext(ctx).
+		Model(&article.Posts{}).
+		Where("Id = ?", articleBody.ID).
+		Updates(map[string]interface{}{
+			"Title":    articleBody.Title,
+			"Content":  articleBody.Content,
+			"Category": articleBody.Category,
+			"Status":   articleBody.Status,
+		}).Error
+
+	if err != nil {
+		return errors.Wrap(err, "[DATA][UpdateArticle]")
+	}
+
+	return nil
+}
