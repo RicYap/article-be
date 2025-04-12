@@ -1,9 +1,0 @@
-server:
-  port: ":8080"
-database:
-  #namaserver__namadatabase: "[username]:[password]@tcp([addr]:[port])/namadatabase?parseTime=true"
-  servername__dbname: "[username]:[password]@tcp([addr]:[port])/test?parseTime=true"
-swagger:
-  host: "staging.example.com"
-  schemes:
-    - https

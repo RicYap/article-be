@@ -1,8 +1,0 @@
-server:
-  port: ":8080"
-database:
-  master: "sql12772694:n2gkKePWaK@tcp(sql12.freesqldatabase.com:3306)/sql12772694?charset=utf8mb4&parseTime=True&loc=Local"
-swagger:
-  host: ""
-  schemes:
-    - https
