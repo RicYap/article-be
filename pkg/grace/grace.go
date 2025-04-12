@@ -13,43 +13,46 @@ import (
 
 // Serve will run HTTP server with graceful shutdown capability
 func Serve(port string, h http.Handler) error {
+	if port == "" {
+		port = os.Getenv("PORT")
+		if port == "" {
+			port = "10000"
+		}
+	}
+	
+	addr := ":" + port
 
-	// create new http server object
 	server := &http.Server{
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		Handler:      h,
 	}
 
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		return err
 	}
 
 	idleConnsClosed := make(chan struct{})
 	go func() {
-
 		signals := make(chan os.Signal, 1)
-
 		signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)
 		<-signals
 
-		// We received an os signal, shut down.
+		log.Println("🛑 Received shutdown signal...")
 		if err := server.Shutdown(context.Background()); err != nil {
-			// Error from closing listeners, or context timeout:
-			log.Printf("HTTP server shutdown error: %v", err)
+			log.Printf("Shutdown error: %v", err)
 		}
-
 		close(idleConnsClosed)
 	}()
 
-	log.Println("HTTP server running on port", port)
+	log.Println("🚀 HTTP server running on", addr)
 	if err := server.Serve(lis); err != http.ErrServerClosed {
-		// Error starting or closing listener:
 		return err
 	}
 
 	<-idleConnsClosed
-	log.Println("HTTP server shutdown gracefully")
+	log.Println("✅ HTTP server shutdown gracefully")
 	return nil
 }
+
