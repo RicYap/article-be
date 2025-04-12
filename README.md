@@ -18,4 +18,6 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 ```
 
-3. Jalankan program dengan command --> go run cmd/http/main.go
+3. Git clone project
+
+4. Jalankan program dengan command --> go run cmd/http/main.go
