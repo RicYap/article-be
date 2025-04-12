@@ -1,4 +1,4 @@
-Untuk menjalankan code
+Untuk menjalankan project
 
 1. Membuat database pada MySql dengan query
 CREATE TABLE IF NOT EXISTS posts (
