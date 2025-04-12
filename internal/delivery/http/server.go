@@ -13,6 +13,7 @@ type ArticleHandler interface {
 	CreateArticle(w http.ResponseWriter, r *http.Request)
 	GetArticleById(w http.ResponseWriter, r *http.Request)
 	GetArticlePagination(w http.ResponseWriter, r *http.Request)
+	GetArticlePaginationByStatus(w http.ResponseWriter, r *http.Request)
 	UpdateArticle(w http.ResponseWriter, r *http.Request)
 	DeleteArticle(w http.ResponseWriter, r *http.Request)
 }

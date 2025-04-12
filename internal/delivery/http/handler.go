@@ -24,6 +24,7 @@ func (s *Server) Handler() *mux.Router {
 	article.HandleFunc("", s.Article.CreateArticle).Methods("POST")
 	article.HandleFunc("/{id:[0-9]+}", s.Article.GetArticleById).Methods("GET")
 	article.HandleFunc("/{limit:[0-9]+}/{offset:[0-9]+}", s.Article.GetArticlePagination).Methods("GET")
+	article.HandleFunc("/{limit:[0-9]+}/{offset:[0-9]+}/{status:[a-zA-Z]+}", s.Article.GetArticlePaginationByStatus).Methods("GET")
 	article.HandleFunc("/{id:[0-9]+}", s.Article.UpdateArticle).Methods("PUT")
 	article.HandleFunc("/{id:[0-9]+}", s.Article.DeleteArticle).Methods("DELETE")
 

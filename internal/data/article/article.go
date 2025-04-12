@@ -44,13 +44,33 @@ func (d Data) GetArticlePagination(ctx context.Context, limit int, offset int) (
 	err := d.db.
 		WithContext(ctx).
 		Model(&article.Posts{}).
-		Select("Title, Content, Category, Status").
+		Select("Id, Title, Content, Category, Status").
 		Limit(limit).
 		Offset(offset).
 		Find(&articles).
 		Error
 	if err != nil {
 		return articles, errors.Wrap(err, "[DATA][GetArticlePagination]")
+	}
+
+	return articles, nil
+}
+
+func (d Data) GetArticlePaginationByStatus(ctx context.Context, limit int, offset int, status string) ([]article.PostsSlim, error) {
+
+	var articles []article.PostsSlim
+
+	err := d.db.
+		WithContext(ctx).
+		Model(&article.Posts{}).
+		Select("Id, Title, Content, Category, Status").
+		Where("status LIKE ?", "%"+status+"%").
+		Limit(limit).
+		Offset(offset).
+		Find(&articles).
+		Error
+	if err != nil {
+		return articles, errors.Wrap(err, "[DATA][GetArticlePaginationByStatus]")
 	}
 
 	return articles, nil

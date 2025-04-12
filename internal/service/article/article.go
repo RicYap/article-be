@@ -39,6 +39,19 @@ func (s Service) GetArticlePagination(ctx context.Context, limit int, offset int
 	return article, nil
 }
 
+
+func (s Service) GetArticlePaginationByStatus(ctx context.Context, limit int, offset int, status string) ([]article.PostsSlim, error) {
+
+	offset = (offset - 1) * limit
+
+	article, err := s.data.GetArticlePaginationByStatus(ctx, limit, offset, status)
+	if err != nil {
+		return article, errors.Wrap(err, "[SERVICE][GetArticlePaginationByStatus]")
+	}
+
+	return article, nil
+}
+
 func (s Service) UpdateArticle(ctx context.Context, articleBody article.PostsSlim) error {
 
 	err := s.data.UpdateArticle(ctx, articleBody)

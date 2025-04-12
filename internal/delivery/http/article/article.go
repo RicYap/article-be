@@ -20,10 +20,10 @@ func CheckRequirement(title string, content string, category string, status stri
 	validStatuses := map[string]bool{
 		"publish": true,
 		"draft":   true,
-		"trash":   true,
+		"thrash":   true,
 	}
 
-	loweCaseStatus := strings.ToLower(status)
+	lowerCaseStatus := strings.ToLower(status)
 
 	if len(title) < 20 {
 		checkResult = append(checkResult, "Title minimal 20 karakter")
@@ -34,7 +34,7 @@ func CheckRequirement(title string, content string, category string, status stri
 	if len(category) < 3 {
 		checkResult = append(checkResult, "Category minimal 3 karakter")
 	}
-	if !validStatuses[loweCaseStatus] {
+	if !validStatuses[lowerCaseStatus] {
 		checkResult = append(checkResult, "Status antara 'publish', 'draft', 'thrash'")
 	}
 
@@ -138,6 +138,44 @@ func (h *Handler) GetArticlePagination(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result, err := h.articleSvc.GetArticlePagination(ctx, limit, offset)
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
+		return
+	}
+
+	resp.Data = result
+	log.Printf("[INFO] %s %s\n", r.Method, r.URL)
+}
+
+func (h *Handler) GetArticlePaginationByStatus(w http.ResponseWriter, r *http.Request) {
+
+	var (
+		err error
+	)
+
+	resp := response.Response{}
+	defer resp.RenderJSON(w, r)
+
+	ctx := r.Context()
+
+	vars := mux.Vars(r)
+
+	limit, err := strconv.Atoi(vars["limit"])
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
+		return
+	}
+
+	offset, err := strconv.Atoi(vars["offset"])
+	if err != nil {
+		resp = httpHelper.ParseErrorCode(err.Error())
+		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
+		return
+	}
+
+	result, err := h.articleSvc.GetArticlePaginationByStatus(ctx, limit, offset, vars["status"])
 	if err != nil {
 		resp = httpHelper.ParseErrorCode(err.Error())
 		log.Printf("[ERROR] %s %s - %v\n", r.Method, r.URL, err)
