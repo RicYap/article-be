@@ -72,12 +72,12 @@ func WithConfigFile(file string) Option {
 
 func getDefaultConfigFile() string {
 
-	configPath := "./files/etc/example/example.development.yaml"
+	configPath := "./files/etc/example/development.yaml"
 	namespace, _ := ioutil.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace")
 
 	env := string(namespace)
 	if os.Getenv("GOPATH") == "" {
-		configPath = "./example.development.yaml"
+		configPath = "./development.yaml"
 	}
 
 	if env != "" {

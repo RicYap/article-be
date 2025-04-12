@@ -4,9 +4,13 @@ import (
 	"article/internal/entity/article"
 	"article/pkg/errors"
 	"context"
+	"time"
 )
 
 func (d Data) CreateArticle(ctx context.Context, article article.Posts) error {
+
+	article.CreatedDate = time.Now()
+	article.UpdatedDate = time.Now()
 
 	err := d.db.
 		WithContext(ctx).
@@ -82,11 +86,13 @@ func (d Data) UpdateArticle(ctx context.Context, articleBody article.PostsSlim) 
 		WithContext(ctx).
 		Model(&article.Posts{}).
 		Where("Id = ?", articleBody.ID).
+		Select("Title", "Content", "Category", "Status", "Updated_date").
 		Updates(map[string]interface{}{
 			"Title":    articleBody.Title,
 			"Content":  articleBody.Content,
 			"Category": articleBody.Category,
 			"Status":   articleBody.Status,
+			"Updated_date": time.Now(),
 		}).Error
 
 	if err != nil {

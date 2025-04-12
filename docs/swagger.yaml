@@ -1,7 +1,7 @@
 basePath: /example
 info:
   contact: {}
-  description: PHAROS Example API
+  description: Example API
   title: Example API
   version: "1.0"
 paths:
