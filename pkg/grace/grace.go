@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -19,8 +20,11 @@ func Serve(port string, h http.Handler) error {
 			port = "10000"
 		}
 	}
-	
-	addr := ":" + port
+
+	// Safely add leading colon if missing
+	if !strings.HasPrefix(port, ":") {
+		port = ":" + port
+	}
 
 	server := &http.Server{
 		ReadTimeout:  10 * time.Second,
@@ -28,25 +32,26 @@ func Serve(port string, h http.Handler) error {
 		Handler:      h,
 	}
 
-	lis, err := net.Listen("tcp", addr)
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		return err
 	}
 
 	idleConnsClosed := make(chan struct{})
+
 	go func() {
 		signals := make(chan os.Signal, 1)
 		signal.Notify(signals, os.Interrupt, syscall.SIGTERM, syscall.SIGHUP)
 		<-signals
 
-		log.Println("🛑 Received shutdown signal...")
+		log.Println("🛑 Received shutdown signal")
 		if err := server.Shutdown(context.Background()); err != nil {
 			log.Printf("Shutdown error: %v", err)
 		}
 		close(idleConnsClosed)
 	}()
 
-	log.Println("🚀 HTTP server running on", addr)
+	log.Println("🚀 HTTP server running on", port)
 	if err := server.Serve(lis); err != http.ErrServerClosed {
 		return err
 	}
