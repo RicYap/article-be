@@ -9,8 +9,8 @@ import (
 
 func (d Data) CreateArticle(ctx context.Context, article article.Posts) error {
 
-	article.CreatedDate = time.Now()
-	article.UpdatedDate = time.Now()
+	article.CreatedDate = time.Now().Local()
+	article.UpdatedDate = time.Now().Local()
 
 	err := d.db.
 		WithContext(ctx).
@@ -92,7 +92,7 @@ func (d Data) UpdateArticle(ctx context.Context, articleBody article.PostsSlim) 
 			"Content":  articleBody.Content,
 			"Category": articleBody.Category,
 			"Status":   articleBody.Status,
-			"Updated_date": time.Now(),
+			"Updated_date": time.Now().Local(),
 		}).Error
 
 	if err != nil {
