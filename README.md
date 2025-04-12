@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS posts (
     Title VARCHAR(200) NOT NULL,
     Content TEXT NOT NULL,
     Category VARCHAR(100) NOT NULL,
-    Created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    Updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    Status VARCHAR(100) NOT NULL CHECK (status IN ('Publish', 'Draft', 'Thrash'))
+    Created_date TIMESTAMP,
+    Updated_date DATETIME,
+    Status VARCHAR(100) NOT NULL 
 );
 ```
 
